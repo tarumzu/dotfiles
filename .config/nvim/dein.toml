@@ -1,0 +1,22 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+[[plugins]]
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+hook_add = 'source ~/.config/nvim/userautoload/plugins/denite.vim'
+[[plugins]]
+repo = 'Shougo/deoplete.nvim'
+hook_add = 'source ~/.config/nvim/userautoload/plugins/deoplete.vim'
+[[plugins]]
+repo = 'Shougo/neosnippet'
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+[[plugins]]
+repo = 'scrooloose/syntastic'
+hook_add = 'source ~/.config/nvim/userautoload/plugins/syntastic.vim'
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+[[plugins]]
+repo = 'ekalinin/Dockerfile.vim'

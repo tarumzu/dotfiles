@@ -1,0 +1,17 @@
+# ruby自動補完
+[[plugins]]
+repo = 'fishbullet/deoplete-ruby'
+#repo = 'Shougo/deoplete-rct'
+on_i = 1
+on_ft = ['ruby']
+[[plugins]]
+repo = 'jiangmiao/auto-pairs'
+on_i = 1
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+on_path = '.*'
+on_i = 1
+# slimハイライト
+[[plugins]]
+repo = 'slim-template/vim-slim'
+on_ft = ['slim']
