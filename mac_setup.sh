@@ -1,6 +1,7 @@
 #!/bin/sh
 
 # Attention! 先にxcodeインストールすること
+# コマンドラインツール
 xcode-select --install
 
 # brew install
@@ -23,16 +24,17 @@ if [[ $? != 0 ]] ; then
   cp -rf ./.config ./.vimrc ~/
 fi
 
+# ruby install
+brew install rbenv
+
 # zsh install
 which -s /usr/local/bin/zsh
 if [[ $? != 0 ]] ; then
   brew install zsh
-  brew install zplug
   # change default shell
   echo /usr/local/bin/zsh | sudo tee -a /etc/shells
   chsh -s /usr/local/bin/zsh
   cp -rf ./.zsh ./.zshrc ~/
 fi
-
-# ruby install
-brew install rbenv
+brew install zplug
+brew install peco
