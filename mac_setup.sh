@@ -25,6 +25,8 @@ if [[ $? != 0 ]] ; then
   pip3 install neovim
   cp -rf ./.config ./.vimrc ~/
   ln -s ~/.vimrc ~/.config/nvim/init.vim
+else
+  cp -rf ./.config ./.vimrc ~/
 fi
 
 # ruby install
@@ -37,6 +39,8 @@ if [[ $? != 0 ]] ; then
   # change default shell
   echo /usr/local/bin/zsh | sudo tee -a /etc/shells
   chsh -s /usr/local/bin/zsh
+  cp -rf ./.zsh ./.zshrc ~/
+else
   cp -rf ./.zsh ./.zshrc ~/
 fi
 brew install zplug
