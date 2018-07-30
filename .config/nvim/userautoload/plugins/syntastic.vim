@@ -7,8 +7,8 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_aggregate_errors = 1
 let g:syntastic_mode_map = { 'mode': 'passive',
                             \ 'active_filetypes': ['ruby', 'javascript', 'coffee', 'css', 'scss', 'sass', 'xml', 'yaml', 'json'] }
-let g:syntastic_ruby_exec = '/Users/mizukami/.rbenv/shims/ruby'
-let g:syntastic_ruby_rubocop_exec = '/Users/mizukami/.rbenv/shims/rubocop'
+let g:syntastic_ruby_exec = '~/.rbenv/shims/ruby'
+let g:syntastic_ruby_rubocop_exec = '~/.rbenv/shims/rubocop'
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
 nnoremap <silent> <Leader>sm :<C-u>SyntasticCheck mri <CR>
