@@ -92,8 +92,6 @@ syntax on
 " Escの3回押しでハイライト消去
 nmap <ESC><ESC><ESC> :nohlsearch<CR><ESC>
 
-let g:neomru#time_format = "(%Y/%m/%d %H:%M:%S) "
-
 " statusline
 set statusline=%{expand('%:p:t')}\ %<\(%{SnipMid(expand('%:p:h'),80-len(expand('%:p:t')),'...')}\)%=\ %m%r%y%w%{'['.(&fenc!=''?&fenc:&enc).']['.&ff.']'}[%3l,%3c]
 
