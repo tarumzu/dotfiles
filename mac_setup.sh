@@ -20,7 +20,9 @@ killall Finder
 # neovim install(起動時に関連プラグイン一括インストール)
 which -s /usr/local/bin/nvim
 if [[ $? != 0 ]] ; then
+  brew install python3
   brew install neovim
+  pip3 install neovim
   cp -rf ./.config ./.vimrc ~/
   ln -s ~/.vimrc ~/.config/nvim/init.vim
 fi
