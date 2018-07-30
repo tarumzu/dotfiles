@@ -1,7 +1,3 @@
-" dein設定
-if !&compatible
-  set nocompatible
-endif
 " reset augroup
 augroup MyAutoCmd
   autocmd!
@@ -22,25 +18,45 @@ endif
 """"""" end
 
 if s:vimrc_plugin_on == s:true
-  let s:cache_home = empty($XDG_CACHE_HOME) ? expand('~/.cache') : $XDG_CACHE_HOME
-  let s:dein_dir = s:cache_home . '/dein'
-  let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
-  if !isdirectory(s:dein_repo_dir)
-    call system('git clone https://github.com/Shougo/dein.vim ' . shellescape(s:dein_repo_dir))
+  if &compatible
+    set nocompatible
   endif
-  let &runtimepath = s:dein_repo_dir .",". &runtimepath
-  " プラグイン読み込み＆キャッシュ作成
-  let s:toml = fnamemodify(expand('<sfile>'), ':h').'/dein.toml'
-  let s:lazy_toml = fnamemodify(expand('<sfile>'), ':h').'/dein_lazy.toml'
+
+  "# dein.vimインストール時に指定したディレクトリをセット
+  let s:dein_dir = expand('~/.cache/dein')
+
+  "# dein.vimの実体があるディレクトリをセット
+  let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+  " dein.vimが存在していない場合はgithubからclone
+  if &runtimepath !~# '/dein.vim'
+    if !isdirectory(s:dein_repo_dir)
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+    endif
+    execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+  endif
+
   if dein#load_state(s:dein_dir)
     call dein#begin(s:dein_dir)
-    call dein#load_toml(s:toml)
-    call dein#load_toml(s:lazy_toml, {'lazy': 1})
+
+    "# dein.toml, dein_layz.tomlファイルのディレクトリをセット
+    let s:toml_dir = expand('~/.config/nvim')
+
+    "# 起動時に読み込むプラグイン群
+    call dein#load_toml(s:toml_dir . '/dein.toml', {'lazy': 0})
+
+    "# 遅延読み込みしたいプラグイン群
+    call dein#load_toml(s:toml_dir . '/dein_lazy.toml', {'lazy': 1})
+
     call dein#end()
     call dein#save_state()
   endif
-  " 未インストールプラグインの自動インストール
-  if has('vim_starting') && dein#check_install()
+
+  filetype plugin indent on
+  syntax enable
+
+  " If you want to install not installed plugins on startup.
+  if dein#check_install()
     call dein#install()
   endif
 endif

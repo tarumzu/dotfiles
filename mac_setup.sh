@@ -22,6 +22,7 @@ which -s /usr/local/bin/nvim
 if [[ $? != 0 ]] ; then
   brew install neovim
   cp -rf ./.config ./.vimrc ~/
+  ln -s ~/.vimrc ~/.config/nvim/init.vim
 fi
 
 # ruby install
