@@ -14,8 +14,10 @@ else
 fi
 
 # 隠しファイル表示
-defaults write com.apple.finder AppleShowAllFiles TRUE
-killall Finder
+if defaults read com.apple.finder AppleShowAllFiles | grep -iqE '^(0|off|false|no)$'; then
+  defaults write com.apple.finder AppleShowAllFiles TRUE
+  killall Finder
+fi
 
 # neovim install(起動時に関連プラグイン一括インストール)
 which -s /usr/local/bin/nvim
