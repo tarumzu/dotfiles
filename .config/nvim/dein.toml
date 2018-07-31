@@ -13,6 +13,7 @@ hook_add = 'source ~/.config/nvim/userautoload/plugins/deoplete.vim'
 repo = 'Shougo/neosnippet'
 [[plugins]]
 repo = 'Shougo/neosnippet-snippets'
+hook_add = 'source ~/.config/nvim/userautoload/plugins/neosnippet.vim'
 [[plugins]]
 repo = 'scrooloose/syntastic'
 hook_add = 'source ~/.config/nvim/userautoload/plugins/syntastic.vim'

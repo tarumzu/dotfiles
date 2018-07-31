@@ -17,6 +17,7 @@ if len(findfile(".development.vim", ".;")) > 0
 endif
 """"""" end
 
+"""""" start dein
 if s:vimrc_plugin_on == s:true
   if &compatible
     set nocompatible
@@ -60,6 +61,7 @@ if s:vimrc_plugin_on == s:true
     call dein#install()
   endif
 endif
+""""""" end dein
 
 " 色々設定
 let g:indent_guides_auto_colors = 0
@@ -107,19 +109,3 @@ function! SnipMid(str, len, mask)
 
   return (len_head > 0 ? a:str[: len_head - 1] : '') . a:mask . (len_tail > 0 ? a:str[-len_tail :] : '')
 endfunction
-
-let g:neosnippet#snippets_directory = '~/.vim/snippets/'
-" <TAB>: completion.
-" inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-" SuperTab like snippets behavior.
-" imap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
-"imap <expr><TAB> pumvisible() ? "\<C-n>" : neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-"smap <expr><TAB> neosnippet#jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
