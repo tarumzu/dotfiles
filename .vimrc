@@ -18,6 +18,7 @@ endif
 """"""" end
 
 """""" start dein
+" 各プラグインの設定は~/.config/nvim/を参照
 if s:vimrc_plugin_on == s:true
   if &compatible
     set nocompatible
