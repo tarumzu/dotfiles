@@ -1,6 +1,9 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
 [[plugins]]
+repo = 'Shougo/defx.nvim'
+hook_add = 'source ~/.config/nvim/userautoload/plugins/defx.vim'
+[[plugins]]
 repo = 'Shougo/vimproc.vim'
 build = 'make'
 [[plugins]]

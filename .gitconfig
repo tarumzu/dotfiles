@@ -20,7 +20,7 @@
 [push]
   default = current
 [user]
-	name = taru-m
+	name = tarumzu
 	email = 
 [commit]
 	template = ~/.commit_template

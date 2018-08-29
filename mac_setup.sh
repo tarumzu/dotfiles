@@ -6,15 +6,22 @@ gitname=$(git config user.name)
 gitemail=$(git config user.email)
 
 # dotfilesコピー
+mkdir -p ${HOME}/.config/nvim
 readonly DOT_FILES=( 
-                    .vimrc .config
+                    .vimrc
+                    .config/nvim/dein.toml .config/nvim/dein_lazy.toml
                     .zshrc .zsh
                     .commit_template .gitconfig
                    )
 for file in ${DOT_FILES[@]}; do
   ln -fs ${PWD}/${file} ${HOME}/${file}
 done
-ln -fs ${HOME}/.vimrc ${HOME}/.config/nvim/init.vim # nvim設定
+# nvim設定
+if [ ! -L ${HOME}/.config/nvim/userautoload ]; then
+  mv ${HOME}/.config/nvim/userautoload ${HOME}/.config/nvim/userautoload_`date "+%Y%m%d_%H%M%S"`
+fi
+ln -nfs ${PWD}/.config/nvim/userautoload ${HOME}/.config/nvim/userautoload
+ln -fs ${HOME}/.vimrc ${HOME}/.config/nvim/init.vim
 
 # gitconfig設定
 read -p "gitconfig user.name ($gitname):" name
