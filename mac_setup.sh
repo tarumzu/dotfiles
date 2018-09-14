@@ -30,7 +30,7 @@ if [ -n "$name" ]; then
 fi
 git config --global user.name "$gitname"
 read -p "gitconfig user.email ($gitemail):" email
-if [ -n "$name" ]; then
+if [ -n "$email" ]; then
   gitemail=$email
 fi
 git config --global user.email "$gitemail"
