@@ -78,4 +78,7 @@ fi
 brew install zplug
 brew install peco
 
+# 通知
+brew install terminal-notifier
+
 echo "-------Complete!-------"
