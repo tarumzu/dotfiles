@@ -73,8 +73,9 @@ if [[ $? != 0 ]] ; then
   brew install zsh
   # change default shell
   echo /usr/local/bin/zsh | sudo tee -a /etc/shells
-  chsh -s /usr/local/bin/zsh
 fi
+chsh -s /usr/local/bin/zsh
+
 brew install zplug
 brew install peco
 
