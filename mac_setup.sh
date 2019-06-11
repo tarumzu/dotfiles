@@ -82,3 +82,4 @@ brew install peco
 brew install terminal-notifier
 
 echo "-------Complete!-------"
+echo "Please restart the terminal!"
