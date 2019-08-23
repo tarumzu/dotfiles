@@ -13,7 +13,6 @@ zplug "nojhan/liquidprompt"
 
 ## tools
 zplug "marzocchi/zsh-notify"  # 処理終わったらmacに通知飛ばす
-zplug "b4b4r07/emoji-cli", if:"which jq"       # 絵文字コマンド
 zplug "zsh-users/zsh-history-substring-search" # 履歴強化
 zplug "wbinglee/zsh-wakatime"  # コマンドにかかった時間表示
 zplug "b4b4r07/enhancd", use:enhancd.sh
