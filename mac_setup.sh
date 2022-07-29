@@ -1,6 +1,13 @@
 #!/bin/sh
 echo "-------Start!-------"
 
+# 隠しファイル表示
+if defaults read com.apple.finder AppleShowAllFiles | grep -iqE '^(0|off|false|no)$'; then
+  defaults write com.apple.finder AppleShowAllFiles TRUE
+  killall Finder
+fi
+
+
 # gitconfig設定値のデフォルト取得
 gitname=$(git config user.name)
 gitemail=$(git config user.email)
@@ -44,20 +51,33 @@ fi
 # brew install
 which -s brew
 if [[ $? != 0 ]] ; then
-  /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   brew doctor
 else
   brew update
 fi
 
-# 隠しファイル表示
-if defaults read com.apple.finder AppleShowAllFiles | grep -iqE '^(0|off|false|no)$'; then
-  defaults write com.apple.finder AppleShowAllFiles TRUE
-  killall Finder
+if [[ -d '/opt/homebrew' ]]; then
+ # apple silicon Mac
+ HOMEBREW_HOME='/opt/homebrew'
+else
+ # Intel Mac
+ HOMEBREW_HOME='/usr/local'
 fi
 
+export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
+
+# zsh install
+which -s $HOMEBREW_HOME/bin/zsh
+if [[ $? != 0 ]] ; then
+  $HOMEBREW_HOME/bin/brew install zsh
+  # change default shell
+  echo $HOMEBREW_HOME/bin/zsh | sudo tee -a /etc/shells
+fi
+chsh -s $HOMEBREW_HOME/bin/zsh
+
 # neovim install(起動時に関連プラグイン一括インストール)
-which -s /usr/local/bin/nvim
+which -s $HOMEBREW_HOME/bin/nvim
 if [[ $? != 0 ]] ; then
   brew install python3
   brew install neovim
@@ -66,15 +86,6 @@ fi
 
 # ruby install
 brew install rbenv
-
-# zsh install
-which -s /usr/local/bin/zsh
-if [[ $? != 0 ]] ; then
-  brew install zsh
-  # change default shell
-  echo /usr/local/bin/zsh | sudo tee -a /etc/shells
-fi
-chsh -s /usr/local/bin/zsh
 
 brew install zplug
 brew install peco

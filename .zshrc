@@ -1,4 +1,13 @@
-export ZPLUG_HOME=/usr/local/opt/zplug
+if [[ -d '/opt/homebrew' ]]; then
+ # apple silicon Mac
+ HOMEBREW_HOME='/opt/homebrew'
+else
+ # Intel Mac
+ HOMEBREW_HOME='/usr/local'
+fi
+
+export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
+export ZPLUG_HOME=$HOMEBREW_HOME/opt/zplug
 export LANG=ja_JP.UTF-8
 source $ZPLUG_HOME/init.zsh
 
@@ -29,7 +38,6 @@ source ~/.zsh/taru.zsh-theme
 
 # User configuration
 export ENHANCD_FILTER=fzf cd
-export PATH=$HOME/bin:/usr/local/bin/:/usr/local/sbin:$PATH
 #export PATH="$HOME/.rbenv/shims:$PATH"
 export PATH=$PATH:/usr/local/share/python
 #export PATH="$HOME/.rbenv/bin:$PATH"
@@ -45,7 +53,7 @@ export PATH=$PATH:/usr/local/share/python
  # adb設定
 export PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
 #export PATH=$HOME/.rbenv:$PATH
-export PATH=/usr/local/opt/rbenv/bin:$PATH
+export PATH=$HOMEBREW_HOME/opt/rbenv/bin:$PATH
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 # docker設定
 #eval "$(docker-machine env default)"
@@ -82,15 +90,10 @@ _fzf_compgen_path() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-export PATH="$HOME/.fastlane/bin:$PATH"
-export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
 ##Android SDK
 #export PATH=$PATH:~/Library/Android/sdk/platform-tools
 #export PATH=$PATH:~/Library/Android/sdk/tools
 export ANDROID_HOME=$PATH:~/Library/Android/sdk
-
-# nodebrew
-export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 if which pyenv > /dev/null; then
   export PATH="$HOME/.pyenv/bin:$PATH"
