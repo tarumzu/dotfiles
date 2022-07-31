@@ -29,8 +29,8 @@ if ! zplug check --verbose; then
     printf "Install? [y/N]: "
     if read -q; then
         echo; zplug install
-    fi 
-fi 
+    fi
+fi
 # プラグインを読み込み、コマンドにパスを通す
 zplug load --verbose
 
@@ -38,29 +38,17 @@ source ~/.zsh/taru.zsh-theme
 
 # User configuration
 export ENHANCD_FILTER=fzf cd
-#export PATH="$HOME/.rbenv/shims:$PATH"
 export PATH=$PATH:/usr/local/share/python
-#export PATH="$HOME/.rbenv/bin:$PATH"
 
-
-
-# github用コマンド
-#eval "$(hub alias -s)"
-
-
-
-
- # adb設定
+# Android
+# adb設定
 export PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
-#export PATH=$HOME/.rbenv:$PATH
+# toolbox AndroidStudio
+export JAVA_HOME=$HOME/Library/Application\ Support/JetBrains/Toolbox/apps/AndroidStudio/ch-0/221.5921.22.2211.8786657/Android\ Studio\ Preview.app/Contents/jbr/Contents/Home
+
+# ruby
 export PATH=$HOMEBREW_HOME/opt/rbenv/bin:$PATH
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-# docker設定
-#eval "$(docker-machine env default)"
-# added by travis gem
-[ -f /Users/user/.travis/travis.sh ] && source /Users/user/.travis/travis.sh
-
-if [[ -s /Users/mizukami/.nvm/nvm.sh ]] ; then source /Users/mizukami/.nvm/nvm.sh ; fi
 
 # direnv
 if which direnv > /dev/null; then
@@ -71,7 +59,6 @@ fi
 # nvim
 export XDG_CONFIG_HOME=$HOME/.config
 alias vim=nvim
-
 
 # fzf
 # Use ~~ as the trigger sequence instead of the default **
@@ -90,16 +77,11 @@ _fzf_compgen_path() {
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
-##Android SDK
-#export PATH=$PATH:~/Library/Android/sdk/platform-tools
-#export PATH=$PATH:~/Library/Android/sdk/tools
-export ANDROID_HOME=$PATH:~/Library/Android/sdk
 
 if which pyenv > /dev/null; then
   export PATH="$HOME/.pyenv/bin:$PATH"
   eval "$(pyenv init -)"
 fi
-
 
 # タイトル動的
 precmd() {
@@ -108,11 +90,7 @@ precmd() {
    print -Pn "\e]0;$cwd\a"
 }
 
-#preexec() {
-#   if overridden; then return; fi
-#   printf "\033]0;%s\a" "${1%% *} | $cwd"
-
-## Go 環境設定
+# Go 環境設定
 if [ -x "`which go`" ]; then
   export GOPATH=$HOME/.go
   export PATH=$PATH:$GOPATH/bin
