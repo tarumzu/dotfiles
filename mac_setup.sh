@@ -7,6 +7,9 @@ if defaults read com.apple.finder AppleShowAllFiles | grep -iqE '^(0|off|false|n
   killall Finder
 fi
 
+# keyのリピート速度Max ※ Macの再起動が必要
+defaults write -g InitialKeyRepeat -int 15
+defaults write -g KeyRepeat -int 2
 
 # gitconfig設定値のデフォルト取得
 gitname=$(git config user.name)
@@ -94,4 +97,4 @@ brew install peco
 brew install terminal-notifier
 
 echo "-------Complete!-------"
-echo "Please restart the terminal!"
+echo "Please restart your Mac!"
