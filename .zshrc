@@ -44,7 +44,7 @@ export PATH=$PATH:/usr/local/share/python
 # adb設定
 export PATH=$PATH:$HOME/Library/Android/sdk/platform-tools
 # toolbox AndroidStudio
-export JAVA_HOME=$HOME/Library/Application\ Support/JetBrains/Toolbox/apps/AndroidStudio/ch-0/221.5921.22.2211.8786657/Android\ Studio\ Preview.app/Contents/jbr/Contents/Home
+export JAVA_HOME=$(find "$HOME/Library/Application Support/JetBrains/Toolbox/apps/AndroidStudio/ch-0" -path '*/Android Studio*.app/Contents/jbr/Contents/Home' | head -n 1)
 
 # ruby
 export PATH=$HOMEBREW_HOME/opt/rbenv/bin:$PATH
