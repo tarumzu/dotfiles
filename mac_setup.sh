@@ -87,9 +87,6 @@ if [[ $? != 0 ]] ; then
   pip3 install neovim
 fi
 
-# ruby install
-brew install rbenv
-
 brew install zplug
 brew install peco
 
