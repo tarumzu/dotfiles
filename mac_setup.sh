@@ -96,5 +96,9 @@ brew install peco
 # 通知
 brew install terminal-notifier
 
+# terminal
+brew tap manaflow-ai/cmux
+brew install --cask cmux
+
 echo "-------Complete!-------"
 echo "Please restart your Mac!"
