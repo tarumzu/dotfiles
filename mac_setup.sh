@@ -2,10 +2,8 @@
 echo "-------Start!-------"
 
 # 隠しファイル表示
-if defaults read com.apple.finder AppleShowAllFiles | grep -iqE '^(0|off|false|no)$'; then
-  defaults write com.apple.finder AppleShowAllFiles TRUE
-  killall Finder
-fi
+defaults write com.apple.finder AppleShowAllFiles YES
+killall Finder
 
 # keyのリピート速度Max ※ Macの再起動が必要
 defaults write -g InitialKeyRepeat -int 15
