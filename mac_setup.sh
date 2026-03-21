@@ -25,7 +25,7 @@ for file in ${DOT_FILES[@]}; do
   ln -fs ${PWD}/${file} ${HOME}/${file}
 done
 # nvim設定
-if [ ! -L ${HOME}/.config/nvim/userautoload ]; then
+if [ -e ${HOME}/.config/nvim/userautoload ] && [ ! -L ${HOME}/.config/nvim/userautoload ]; then
   mv ${HOME}/.config/nvim/userautoload ${HOME}/.config/nvim/userautoload_`date "+%Y%m%d_%H%M%S"`
 fi
 ln -nfs ${PWD}/.config/nvim/userautoload ${HOME}/.config/nvim/userautoload
