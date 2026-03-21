@@ -82,7 +82,7 @@ which -s $HOMEBREW_HOME/bin/nvim
 if [[ $? != 0 ]] ; then
   brew install python3
   brew install neovim
-  pip3 install neovim
+  pip3 install pynvim
 fi
 
 brew install zplug
