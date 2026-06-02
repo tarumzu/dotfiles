@@ -10,14 +10,16 @@ if [ -d "$_as_toolbox" ]; then
 fi
 unset _as_toolbox
 
+# エディタ
+export EDITOR=nvim
+
 # direnv
-if which direnv > /dev/null; then
-  export EDITOR=vim
+if command -v direnv > /dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
 # Go
-if which go > /dev/null; then
+if command -v go > /dev/null; then
   export GOPATH=$HOME/.go
   export PATH=$PATH:$GOPATH/bin
 fi
@@ -25,8 +27,16 @@ fi
 # fzf
 export FZF_COMPLETION_TRIGGER='~~'   # 既定の ** ではなく ~~ を使う
 export FZF_COMPLETION_OPTS='+c -x'
-# 候補列挙に find ではなく ag を使う
-_fzf_compgen_path() {
-  ag -g "" "$1"
-}
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# 候補列挙に find ではなく fd を使う
+if command -v fd > /dev/null; then
+  _fzf_compgen_path() {
+    fd --hidden --follow --exclude .git . "$1"
+  }
+  _fzf_compgen_dir() {
+    fd --type d --hidden --follow --exclude .git . "$1"
+  }
+fi
+# fzf シェル統合 (fzf >= 0.48)
+if command -v fzf > /dev/null; then
+  eval "$(fzf --zsh)"
+fi

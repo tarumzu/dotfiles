@@ -72,10 +72,12 @@ fi
 
 export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 
-# zsh install
-if [ ! -x "$HOMEBREW_HOME/bin/zsh" ]; then
-  brew install zsh
-fi
+# Brewfile に定義したパッケージを一括インストール
+brew bundle --file="${PWD}/Brewfile"
+
+# Neovim の Python プロバイダ (macOS の Homebrew Python は PEP 668 で守られているため明示的に許可)
+pip3 install --break-system-packages pynvim
+
 # /etc/shells と default shell を必要な時だけ更新
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then
   echo "$HOMEBREW_HOME/bin/zsh" | sudo tee -a /etc/shells
@@ -83,23 +85,6 @@ fi
 if [ "${SHELL:-}" != "$HOMEBREW_HOME/bin/zsh" ]; then
   chsh -s "$HOMEBREW_HOME/bin/zsh"
 fi
-
-# neovim install(起動時に関連プラグイン一括インストール)
-if [ ! -x "$HOMEBREW_HOME/bin/nvim" ]; then
-  brew install neovim
-  # macOS の Homebrew Python は PEP 668 で守られているため明示的に許可
-  pip3 install --break-system-packages pynvim
-fi
-
-brew install zplug
-brew install peco
-
-# 通知
-brew install terminal-notifier
-
-# terminal
-brew tap manaflow-ai/cmux
-brew install --cask cmux
 
 echo "-------Complete!-------"
 echo "Please restart your Mac!"
