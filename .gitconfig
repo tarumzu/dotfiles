@@ -19,8 +19,5 @@
   required = true
 [push]
   default = current
-[user]
-	name = tarumzu
-	email = 
 [commit]
 	template = ~/.commit_template
