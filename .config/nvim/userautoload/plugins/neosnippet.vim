@@ -1,4 +1,4 @@
-let g:neosnippet#snippets_directory = '~/.vim/snippets/'
+let g:neosnippet#snippets_directory = '~/.config/nvim/snippets/'
 " <TAB>: completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 inoremap <expr><S-TAB>  pumvisible() ? "\<C-p>" : "\<S-TAB>"

@@ -55,7 +55,6 @@ if s:vimrc_plugin_on == s:true
   endif
 
   filetype plugin indent on
-  syntax enable
 
   " If you want to install not installed plugins on startup.
   if dein#check_install()
@@ -65,20 +64,13 @@ endif
 """"""" end dein
 
 " 色々設定
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=3
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=4
-" 奇数インデントのカラー
-hi IndentGuidesOdd  guibg=red   ctermbg=3
-" 偶数インデントのカラー
-hi IndentGuidesEven guibg=green ctermbg=4
+syntax enable      " シンタックスハイライト (開発モードでも有効)
 set history=1000   " コマンドの履歴
 set clipboard+=unnamedplus " クリップボード共有
 set autoindent    " インデント
 set hlsearch      " 検索結果文字列のハイライト
 set shiftwidth=2  " autoindentなどの時のタブ幅
 set tabstop=2     " タブキーで入力したときのタブ幅
-set hlsearch      " 検索結果文字列のハイライト
 set showmatch     " 閉じ括弧が入力されたとき、対応する括弧を表示
 set smartcase     " 検索時に大文字を含んでいたら大/小を区別
 set expandtab     " タブを半角スペースに
@@ -90,7 +82,6 @@ set number        " 行番号
 set backspace=start,eol,indent " インサートモード時の文字削除
 set ruler         " カーソル位置表示
 let mapleader = "," " leaderを,に設定
-syntax on
 
 " Escの3回押しでハイライト消去
 nmap <ESC><ESC><ESC> :nohlsearch<CR><ESC>

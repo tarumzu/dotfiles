@@ -24,6 +24,3 @@ repo = 'ekalinin/Dockerfile.vim'
 # codecheck
 [[plugins]]
 repo = 'w0rp/ale'
-#[[plugins]]
-#repo = 'scrooloose/syntastic'
-#hook_add = 'source ~/.config/nvim/userautoload/plugins/syntastic.vim'
