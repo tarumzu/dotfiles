@@ -8,11 +8,10 @@
       "description": "sheldon plugins.toml: github + rev で固定したコミットを更新",
       "managerFilePatterns": ["/^\\.config/sheldon/plugins\\.toml$/"],
       "matchStrings": [
-        "github\\s*=\\s*\"(?<depName>[^\"]+)\"\\s*[\\r\\n]+\\s*rev\\s*=\\s*\"(?<currentDigest>[0-9a-f]{40})\""
+        "github\\s*=\\s*\"(?<depName>[^\"]+)\"\\s*[\\r\\n]+\\s*branch\\s*=\\s*\"(?<currentValue>[^\"]+)\"\\s*[\\r\\n]+\\s*rev\\s*=\\s*\"(?<currentDigest>[0-9a-f]{40})\""
       ],
       "datasourceTemplate": "git-refs",
-      "packageNameTemplate": "https://github.com/{{{depName}}}",
-      "currentValueTemplate": "HEAD"
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
     }
   ]
 }
