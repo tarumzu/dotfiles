@@ -7,8 +7,7 @@ brew "neovim"
 
 # CLI ツール
 brew "ghq"          # リポジトリ管理 (g エイリアス)
-brew "peco"         # インクリメンタル絞り込み (履歴 / g エイリアス)
-brew "fzf"          # ファジーファインダ (enhancd / 補完)
+brew "fzf"          # ファジーファインダ (履歴 / 補完 / enhancd / g エイリアス)
 brew "fd"           # find の代替 (fzf 候補列挙)
 brew "ripgrep"      # grep の代替
 brew "direnv"       # ディレクトリ単位の環境変数

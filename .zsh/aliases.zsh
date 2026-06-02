@@ -13,5 +13,5 @@ alias tree="tree -NC"
 # nvim
 alias vim=nvim
 
-# ghq + peco: リポジトリを選択して cd
-alias g='cd $(ghq root)/$(ghq list | peco)'
+# ghq + fzf: リポジトリを選択して cd
+alias g='cd $(ghq root)/$(ghq list | fzf)'
