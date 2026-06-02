@@ -15,22 +15,20 @@ gitname=$(git config user.name || true)
 gitemail=$(git config user.email || true)
 
 # dotfilesコピー
-mkdir -p "${HOME}/.config/nvim"
+mkdir -p "${HOME}/.config"
 readonly DOT_FILES=(
                     .vimrc
-                    .config/nvim/dein.toml .config/nvim/dein_lazy.toml
                     .zshrc .zsh
                     .commit_template .gitconfig
                    )
 for file in "${DOT_FILES[@]}"; do
   ln -fs "${PWD}/${file}" "${HOME}/${file}"
 done
-# nvim設定
-if [ -e "${HOME}/.config/nvim/userautoload" ] && [ ! -L "${HOME}/.config/nvim/userautoload" ]; then
-  mv "${HOME}/.config/nvim/userautoload" "${HOME}/.config/nvim/userautoload_$(date "+%Y%m%d_%H%M%S")"
+# nvim設定 (Lua 構成のディレクトリごと symlink。lazy-lock.json もリポジトリ管理)
+if [ -e "${HOME}/.config/nvim" ] && [ ! -L "${HOME}/.config/nvim" ]; then
+  mv "${HOME}/.config/nvim" "${HOME}/.config/nvim_$(date "+%Y%m%d_%H%M%S")"
 fi
-ln -nfs "${PWD}/.config/nvim/userautoload" "${HOME}/.config/nvim/userautoload"
-ln -fs "${HOME}/.vimrc" "${HOME}/.config/nvim/init.vim"
+ln -nfs "${PWD}/.config/nvim" "${HOME}/.config/nvim"
 
 # gitconfig設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)
 read -p "gitconfig user.name (${gitname}):" name
