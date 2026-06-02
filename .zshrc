@@ -12,6 +12,13 @@ export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 export LANG=ja_JP.UTF-8
 export XDG_CONFIG_HOME=$HOME/.config
 
+# Homebrew zsh はコンパイル時 fpath がバージョン付き Cellar パス
+# (例: .../zsh/5.9/...) を指すが、リビジョン (5.9.1 等) ではディレクトリ名が
+# 食い違い compinit/promptinit が見つからなくなる。リンク先を明示追加して回避。
+if [[ -d "$HOMEBREW_HOME/share/zsh/functions" ]]; then
+  fpath=("$HOMEBREW_HOME/share/zsh/functions" $fpath)
+fi
+
 # -------------------------------------
 # asdf
 # -------------------------------------
