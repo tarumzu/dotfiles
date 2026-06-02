@@ -10,6 +10,7 @@ export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 export ZPLUG_HOME=$HOMEBREW_HOME/opt/zplug
 export LANG=ja_JP.UTF-8
 source $ZPLUG_HOME/init.zsh
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 ## syntax
 zplug "chrissicool/zsh-256color"
@@ -112,3 +113,6 @@ function peco-select-history() {
 }
 zle -N peco-select-history
 bindkey '^r' peco-select-history
+
+# ghq + peco
+alias g='cd $(ghq root)/$(ghq list | peco)'
