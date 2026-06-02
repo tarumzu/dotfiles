@@ -1,0 +1,39 @@
+name: Update Neovim plugins
+
+# lazy-lock.json は (リポジトリ URL を持たないため) Renovate では更新できない。
+# 代わりに nvim をヘッドレス起動して :Lazy! update を実行し、差分があれば PR を作る。
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 毎週月曜 00:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: stable
+
+      - name: Update lazy-lock.json
+        run: |
+          export XDG_CONFIG_HOME="$PWD/.config"
+          # sync = 不足プラグインの install + 既存の update + lazy-lock.json への書き戻し
+          nvim --headless "+Lazy! sync" +qa
+
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "chore(nvim): update lazy-lock.json"
+          title: "chore(nvim): update Neovim plugins"
+          body: |
+            自動実行された `:Lazy! sync` による lazy-lock.json の更新です。
+            マージ前に lazy-lock.json の差分をレビューしてください。
+          branch: chore/nvim-plugin-updates
+          add-paths: .config/nvim/lazy-lock.json
