@@ -1,33 +1,33 @@
 shell = "zsh"
 
+# サプライチェーン対策: 各プラグインを特定コミットに固定 (rev)。
+# 更新時はリポジトリの差分をレビューした上で rev を手動で更新すること。
+# 末尾コメントは固定コミット時点のバージョン (タグ/日付)。
+
 [plugins]
-
-[plugins.zsh-256color]
-github = "chrissicool/zsh-256color"
-
-[plugins.zsh-colors]
-github = "Tarrasch/zsh-colors"
-
-[plugins.zsh-url-highlighter]
-github = "ascii-soup/zsh-url-highlighter"
 
 # 処理終了時に mac へ通知
 [plugins.zsh-notify]
 github = "marzocchi/zsh-notify"
+rev = "9c1dac81a48ec85d742ebf236172b4d92aab2f3f" # v1.0+60 (2023-04-30)
 
 # 履歴のサブストリング検索
 [plugins.zsh-history-substring-search]
 github = "zsh-users/zsh-history-substring-search"
+rev = "14c8d2e0ffaee98f2df9850b19944f32546fdea5" # v1.1.0+14 (2026-01-15)
 
 # コマンド実行時間を計測 (wakatime)
 [plugins.zsh-wakatime]
 github = "wbinglee/zsh-wakatime"
+rev = "98a877680cbf4a2360df7fa0ffc38b6f2b5cd1a0" # タグなし (2025-02-19)
 
 # cd 強化
 [plugins.enhancd]
 github = "b4b4r07/enhancd"
+rev = "5afb4eb6ba36c15821de6e39c0a7bb9d6b0ba415" # v2.5.1+10 (2025-01-24)
 use = ["init.sh"]
 
 # シンタックスハイライトは最後に読み込む必要がある
 [plugins.zsh-syntax-highlighting]
 github = "zsh-users/zsh-syntax-highlighting"
+rev = "1d85c692615a25fe2293bdd44b34c217d5d2bf04" # v0.8.0+4 (2026-02-08)
