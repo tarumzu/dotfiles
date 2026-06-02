@@ -1,0 +1,33 @@
+shell = "zsh"
+
+[plugins]
+
+[plugins.zsh-256color]
+github = "chrissicool/zsh-256color"
+
+[plugins.zsh-colors]
+github = "Tarrasch/zsh-colors"
+
+[plugins.zsh-url-highlighter]
+github = "ascii-soup/zsh-url-highlighter"
+
+# 処理終了時に mac へ通知
+[plugins.zsh-notify]
+github = "marzocchi/zsh-notify"
+
+# 履歴のサブストリング検索
+[plugins.zsh-history-substring-search]
+github = "zsh-users/zsh-history-substring-search"
+
+# コマンド実行時間を計測 (wakatime)
+[plugins.zsh-wakatime]
+github = "wbinglee/zsh-wakatime"
+
+# cd 強化
+[plugins.enhancd]
+github = "b4b4r07/enhancd"
+use = ["init.sh"]
+
+# シンタックスハイライトは最後に読み込む必要がある
+[plugins.zsh-syntax-highlighting]
+github = "zsh-users/zsh-syntax-highlighting"

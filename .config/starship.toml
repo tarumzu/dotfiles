@@ -1,0 +1,13 @@
+# 時刻を右側に表示 (旧 RPROMPT="[%*]" 相当)
+right_format = "$time"
+
+# 直前コマンドの成否で顔文字が変わるプロンプト (旧 liquidprompt prompt_tag 相当)
+[character]
+success_symbol = "[* '-'）](bold green)"
+error_symbol = "[*｀д´）](bold red)"
+
+[time]
+disabled = false
+format = "[\\[$time\\]]($style) "
+time_format = "%H:%M:%S"
+style = "white"

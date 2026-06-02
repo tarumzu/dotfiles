@@ -24,11 +24,18 @@ readonly DOT_FILES=(
 for file in "${DOT_FILES[@]}"; do
   ln -fs "${PWD}/${file}" "${HOME}/${file}"
 done
-# nvim設定 (Lua 構成のディレクトリごと symlink。lazy-lock.json もリポジトリ管理)
-if [ -e "${HOME}/.config/nvim" ] && [ ! -L "${HOME}/.config/nvim" ]; then
-  mv "${HOME}/.config/nvim" "${HOME}/.config/nvim_$(date "+%Y%m%d_%H%M%S")"
-fi
-ln -nfs "${PWD}/.config/nvim" "${HOME}/.config/nvim"
+# ~/.config 配下の symlink (実体ディレクトリなら退避してから張り替え)
+readonly CONFIG_LINKS=(
+                       nvim          # Neovim (lazy.nvim, lazy-lock.json もリポジトリ管理)
+                       sheldon       # zsh プラグイン定義
+                       starship.toml # プロンプト設定
+                      )
+for path in "${CONFIG_LINKS[@]}"; do
+  if [ -e "${HOME}/.config/${path}" ] && [ ! -L "${HOME}/.config/${path}" ]; then
+    mv "${HOME}/.config/${path}" "${HOME}/.config/${path}_$(date "+%Y%m%d_%H%M%S")"
+  fi
+  ln -nfs "${PWD}/.config/${path}" "${HOME}/.config/${path}"
+done
 
 # gitconfig設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)
 read -p "gitconfig user.name (${gitname}):" name

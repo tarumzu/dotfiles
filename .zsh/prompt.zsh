@@ -1,24 +1,14 @@
-# 補完機能の強化
-autoload -U promptinit; promptinit
-autoload -Uz colors; colors
-autoload -Uz vcs_info
-autoload -Uz is-at-least
+# starship プロンプト (設定は ~/.config/starship.toml)
+if command -v starship > /dev/null; then
+  eval "$(starship init zsh)"
+fi
 
-# 直前コマンドの成否で顔文字が変わるプロンプト (liquidprompt の prompt_tag)
-ok="* '-'）"
-ng="*｀д´）"
-p_prompt="
-%(?.%{$fg[green]%}.%{$fg[red]%})%(?!$ok!$ng)%{${reset_color}%} "
-prompt_tag "$p_prompt"
-
-RPROMPT="[%*]"
+autoload -Uz add-zsh-hook
 
 # ターミナルタイトルにカレントディレクトリ名を表示
-precmd() {
-   local pwd=$(pwd)
-   local cwd=${pwd##*/}
-   print -Pn "\e]0;$cwd\a"
-}
+_set_term_title() { print -Pn "\e]0;%1~\a" }
+add-zsh-hook precmd _set_term_title
 
 # cd したあとで自動的に ls する
-function chpwd() { ls }
+_auto_ls() { ls }
+add-zsh-hook chpwd _auto_ls

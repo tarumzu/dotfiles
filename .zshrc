@@ -25,33 +25,17 @@ fi
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 
 # -------------------------------------
-# zplug
+# 補完初期化 (zplug が担っていた compinit を明示実行)
 # -------------------------------------
-export ZPLUG_HOME=$HOMEBREW_HOME/opt/zplug
-source $ZPLUG_HOME/init.zsh
+autoload -Uz compinit && compinit
 
-## syntax
-zplug "chrissicool/zsh-256color"
-zplug "Tarrasch/zsh-colors"
-zplug "zsh-users/zsh-syntax-highlighting"
-zplug "ascii-soup/zsh-url-highlighter"
-
-## prompt
-zplug "nojhan/liquidprompt"
-
-## tools
-zplug "marzocchi/zsh-notify"                    # 処理終了時に mac へ通知
-zplug "zsh-users/zsh-history-substring-search"  # 履歴強化
-zplug "wbinglee/zsh-wakatime"                   # コマンド実行時間表示
-zplug "b4b4r07/enhancd", use:enhancd.sh
-
-if ! zplug check --verbose; then
-    printf "Install? [y/N]: "
-    if read -q; then
-        echo; zplug install
-    fi
+# -------------------------------------
+# sheldon (プラグインマネージャ)
+# プラグイン定義は ~/.config/sheldon/plugins.toml
+# -------------------------------------
+if command -v sheldon > /dev/null; then
+  eval "$(sheldon source)"
 fi
-zplug load --verbose
 
 # -------------------------------------
 # 設定モジュール (~/.zsh/*.zsh)

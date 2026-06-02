@@ -1,6 +1,7 @@
 # シェル
 brew "zsh"
-brew "zplug"        # zsh プラグインマネージャ
+brew "sheldon"      # zsh プラグインマネージャ
+brew "starship"     # クロスシェルプロンプト
 
 # エディタ
 brew "neovim"
