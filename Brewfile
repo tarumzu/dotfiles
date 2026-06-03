@@ -21,4 +21,6 @@ tap "manaflow-ai/cmux"
 cask "cmux"
 
 # Android 開発
-cask "jetbrains-toolbox"  # Android Studio / IntelliJ IDEA を管理 (Toolbox 経由でインストール)
+# 公式インストーラ等で既に Toolbox が入っている場合は brew install が
+# "App already exists" で失敗するため、未インストール時のみ brew に任せる。
+cask "jetbrains-toolbox" unless File.exist?("/Applications/JetBrains Toolbox.app")
