@@ -12,6 +12,7 @@ brew "fzf"          # ファジーファインダ (履歴 / 補完 / enhancd / g
 brew "fd"           # find の代替 (fzf 候補列挙)
 brew "ripgrep"      # grep の代替
 brew "direnv"       # ディレクトリ単位の環境変数
+brew "gh"           # GitHub CLI (PR / issue / workflow 操作)
 
 # 通知
 brew "terminal-notifier"
