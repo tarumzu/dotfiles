@@ -1,0 +1,33 @@
+# Ghostty config
+# https://ghostty.org/docs/config
+# 設定全項目: ghostty +show-config --default
+
+# === Theme ===
+# tokyonight.nvim の Storm variant と揃える
+theme = TokyoNight Storm
+
+# === Font ===
+# Nerd Font (Powerline glyphs / starship のアイコン用) が必要なら以下を有効化:
+#   brew install --cask font-jetbrains-mono-nerd-font
+# font-family = "JetBrainsMono Nerd Font"
+font-size = 14
+
+# === Cursor ===
+cursor-style = block
+cursor-style-blink = false
+
+# === Scrollback ===
+scrollback-limit = 100000
+
+# === UX ===
+# 改行を含むペーストを確認 (誤実行防止)
+clipboard-paste-protection = true
+# 入力中はマウスカーソルを隠す
+mouse-hide-while-typing = true
+# 単一サーフェスを閉じるときの確認ダイアログをスキップ
+confirm-close-surface = false
+
+# === macOS ===
+macos-titlebar-style = tabs
+window-padding-x = 8
+window-padding-y = 8
