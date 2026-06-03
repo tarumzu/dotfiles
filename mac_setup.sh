@@ -38,12 +38,12 @@ for path in "${CONFIG_LINKS[@]}"; do
 done
 
 # gitconfig設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)
-read -p "gitconfig user.name (${gitname}):" name
+read -r -p "gitconfig user.name (${gitname}):" name
 if [ -n "$name" ]; then
   gitname=$name
 fi
 git config -f "${HOME}/.gitconfig_user" user.name "$gitname"
-read -p "gitconfig user.email (${gitemail}):" email
+read -r -p "gitconfig user.email (${gitemail}):" email
 if [ -n "$email" ]; then
   gitemail=$email
 fi

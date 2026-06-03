@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+      - name: shellcheck mac_setup.sh
+        run: shellcheck mac_setup.sh
+
+  renovate-config:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+      - name: Validate renovate.json
+        run: npx --yes -p renovate renovate-config-validator renovate.json
+
+  brewfile:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+      - name: Verify every tap / formula / cask in Brewfile resolves
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: "1"
+          HOMEBREW_NO_INSTALL_CLEANUP: "1"
+        run: |
+          set -euo pipefail
+
+          # Brewfile はテキスト抽出で評価する (Ruby 条件式の真偽に関わらず存在検証する)
+          taps=$(grep -E '^tap[[:space:]]+"' Brewfile | sed -E 's/^tap[[:space:]]+"([^"]+)".*/\1/' || true)
+          brews=$(grep -E '^brew[[:space:]]+"' Brewfile | sed -E 's/^brew[[:space:]]+"([^"]+)".*/\1/' || true)
+          casks=$(grep -E '^cask[[:space:]]+"' Brewfile | sed -E 's/^cask[[:space:]]+"([^"]+)".*/\1/' || true)
+
+          while IFS= read -r t; do
+            [ -z "$t" ] && continue
+            echo "::group::tap $t"
+            brew tap "$t"
+            echo "::endgroup::"
+          done <<< "$taps"
+
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            echo "Checking formula: $f"
+            brew info --formula "$f" >/dev/null
+          done <<< "$brews"
+
+          while IFS= read -r c; do
+            [ -z "$c" ] && continue
+            echo "Checking cask: $c"
+            brew info --cask "$c" >/dev/null
+          done <<< "$casks"
