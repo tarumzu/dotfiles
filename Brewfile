@@ -24,3 +24,9 @@ cask "cmux"
 # 公式インストーラ等で既に Toolbox が入っている場合は brew install が
 # "App already exists" で失敗するため、未インストール時のみ brew に任せる。
 cask "jetbrains-toolbox" unless File.exist?("/Applications/JetBrains Toolbox.app")
+
+# Android CLI (https://developer.android.com/tools/agents/android-cli)
+# Android Studio / SDK / Journeys 等を操作するエージェント向け CLI。
+# android/homebrew-tap は formula ではなく cask として配布している点に注意。
+tap "android/tap"
+cask "android-cli"
