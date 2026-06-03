@@ -2,13 +2,21 @@
 set -euo pipefail
 echo "-------Start!-------"
 
-# 隠しファイル表示
-defaults write com.apple.finder AppleShowAllFiles YES
-killall Finder
+# 隠しファイル表示 (既に有効なら Finder を再起動しない)
+_finder_show=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null || true)
+if [ "$_finder_show" != "YES" ] && [ "$_finder_show" != "1" ]; then
+  defaults write com.apple.finder AppleShowAllFiles -bool true
+  killall Finder
+fi
+unset _finder_show
 
-# keyのリピート速度Max ※ Macの再起動が必要
-defaults write -g InitialKeyRepeat -int 15
-defaults write -g KeyRepeat -int 2
+# キーリピート速度Max ※ 反映には Mac の再起動が必要 (差分があるときだけ書く)
+if [ "$(defaults read -g InitialKeyRepeat 2>/dev/null || true)" != "15" ]; then
+  defaults write -g InitialKeyRepeat -int 15
+fi
+if [ "$(defaults read -g KeyRepeat 2>/dev/null || true)" != "2" ]; then
+  defaults write -g KeyRepeat -int 2
+fi
 
 # gitconfig設定値のデフォルト取得
 gitname=$(git config user.name || true)
@@ -83,7 +91,10 @@ export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 brew bundle --file="${PWD}/Brewfile"
 
 # Neovim の Python プロバイダ (macOS の Homebrew Python は PEP 668 で守られているため明示的に許可)
-pip3 install --break-system-packages pynvim
+# 既導入なら pip にも触らない (PyPI クエリと --break-system-packages 警告を毎回出さないため)
+if ! python3 -c "import pynvim" >/dev/null 2>&1; then
+  pip3 install --break-system-packages pynvim
+fi
 
 # /etc/shells と default shell を必要な時だけ更新
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then
