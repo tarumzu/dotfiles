@@ -19,3 +19,6 @@ brew "terminal-notifier"
 # ターミナル
 tap "manaflow-ai/cmux"
 cask "cmux"
+
+# Android 開発
+cask "jetbrains-toolbox"  # Android Studio / IntelliJ IDEA を管理 (Toolbox 経由でインストール)
