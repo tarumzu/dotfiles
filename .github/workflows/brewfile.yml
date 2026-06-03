@@ -1,9 +1,15 @@
-name: CI
+name: brewfile
 
 on:
   push:
     branches: [master]
+    paths:
+      - "Brewfile"
+      - ".github/workflows/brewfile.yml"
   pull_request:
+    paths:
+      - "Brewfile"
+      - ".github/workflows/brewfile.yml"
 
 permissions:
   contents: read
@@ -13,21 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  shellcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
-      - name: shellcheck mac_setup.sh
-        run: shellcheck mac_setup.sh
-
-  renovate-config:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
-      - name: Validate renovate.json
-        run: npx --yes -p renovate renovate-config-validator renovate.json
-
-  brewfile:
+  validate:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3

@@ -1,0 +1,27 @@
+name: renovate-config
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "renovate.json"
+      - ".github/workflows/renovate-config.yml"
+  pull_request:
+    paths:
+      - "renovate.json"
+      - ".github/workflows/renovate-config.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9f698171ed81b15d1823a05fc7211befd50c8ae0 # v6.0.3
+      - name: Validate renovate.json
+        run: npx --yes -p renovate renovate-config-validator renovate.json
