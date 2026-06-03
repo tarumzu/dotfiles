@@ -3,8 +3,8 @@
 # 設定全項目: ghostty +show-config --default
 
 # === Theme ===
-# tokyonight.nvim の Storm variant と揃える
-theme = TokyoNight Storm
+# tokyonight.nvim の Day variant (light) と揃える
+theme = TokyoNight Day
 
 # === Font ===
 # Nerd Font (Powerline glyphs / starship のアイコン用) が必要なら以下を有効化:
