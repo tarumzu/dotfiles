@@ -19,3 +19,8 @@ brew "terminal-notifier"
 # ターミナル
 tap "manaflow-ai/cmux"
 cask "cmux"
+
+# Android 開発
+# 公式インストーラ等で既に Toolbox が入っている場合は brew install が
+# "App already exists" で失敗するため、未インストール時のみ brew に任せる。
+cask "jetbrains-toolbox" unless File.exist?("/Applications/JetBrains Toolbox.app")
