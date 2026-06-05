@@ -2,6 +2,9 @@
 set -euo pipefail
 echo "-------Start!-------"
 
+# Mac の再起動が必要な変更があったかを追跡する
+needs_restart=0
+
 # 隠しファイル表示 (既に有効なら Finder を再起動しない)
 _finder_show=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null || true)
 if [ "$_finder_show" != "YES" ] && [ "$_finder_show" != "1" ]; then
@@ -13,9 +16,11 @@ unset _finder_show
 # キーリピート速度Max ※ 反映には Mac の再起動が必要 (差分があるときだけ書く)
 if [ "$(defaults read -g InitialKeyRepeat 2>/dev/null || true)" != "15" ]; then
   defaults write -g InitialKeyRepeat -int 15
+  needs_restart=1
 fi
 if [ "$(defaults read -g KeyRepeat 2>/dev/null || true)" != "2" ]; then
   defaults write -g KeyRepeat -int 2
+  needs_restart=1
 fi
 
 # gitconfig設定値のデフォルト取得
@@ -106,4 +111,6 @@ if [ "${SHELL:-}" != "$HOMEBREW_HOME/bin/zsh" ]; then
 fi
 
 echo "-------Complete!-------"
-echo "Please restart your Mac!"
+if [ "$needs_restart" -eq 1 ]; then
+  echo "Please restart your Mac to apply key repeat settings."
+fi
