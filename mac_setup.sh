@@ -65,10 +65,13 @@ if [ -n "$email" ]; then
 fi
 git config -f "${HOME}/.gitconfig_user" user.email "$gitemail"
 
-# Attention! 先にxcodeインストールすること
-# コマンドラインツール
+# Xcode Command Line Tools (未導入なら GUI ダイアログを起動し、完了するまで後続を待たせる)
 if ! xcode-select -p &>/dev/null; then
   xcode-select --install
+  echo "Waiting for Xcode Command Line Tools to finish installing..."
+  until xcode-select -p &>/dev/null; do
+    sleep 10
+  done
 fi
 
 # brew install
