@@ -34,8 +34,10 @@ readonly DOT_FILES=(
                     .zshrc .zsh
                     .commit_template .gitconfig
                    )
+# -n が無いと、対象 (~/.zsh など) が既に symlink で directory を指している場合に
+# その配下へリンクを作ってしまい再帰 symlink が発生する。
 for file in "${DOT_FILES[@]}"; do
-  ln -fs "${PWD}/${file}" "${HOME}/${file}"
+  ln -nfs "${PWD}/${file}" "${HOME}/${file}"
 done
 # ~/.config 配下の symlink (実体ディレクトリなら退避してから張り替え)
 readonly CONFIG_LINKS=(
