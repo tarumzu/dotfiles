@@ -1,13 +1,5 @@
 # dotfiles
 
-## Prerequisites
-
-Install the Xcode Command Line Tools (required to `git clone`):
-
-```sh
-xcode-select --install
-```
-
 ## Setup
 
 ```sh
@@ -16,6 +8,7 @@ cd dotfiles
 ./mac_setup.sh
 ```
 
-The script will prompt for `user.name` / `user.email` and write
-them to `~/.gitconfig_user` (kept out of this repo). Restart your
-Mac when it finishes.
+On a fresh Mac the first `git` invocation triggers an Xcode Command
+Line Tools install dialog — accept it. `mac_setup.sh` waits for the
+install to finish, then prompts for `user.name` / `user.email` and
+writes them to `~/.gitconfig_user` (kept out of this repo).
