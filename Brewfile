@@ -14,9 +14,6 @@ brew "ripgrep"      # grep の代替
 brew "direnv"       # ディレクトリ単位の環境変数
 brew "gh"           # GitHub CLI (PR / issue / workflow 操作)
 
-# 通知
-brew "terminal-notifier"
-
 # ターミナル
 tap "manaflow-ai/cmux"
 cask "cmux"
