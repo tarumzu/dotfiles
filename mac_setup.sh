@@ -5,13 +5,36 @@ echo "-------Start!-------"
 # Mac の再起動が必要な変更があったかを追跡する
 needs_restart=0
 
-# 隠しファイル表示 (既に有効なら Finder を再起動しない)
-_finder_show=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null || true)
-if [ "$_finder_show" != "YES" ] && [ "$_finder_show" != "1" ]; then
+# Finder 関連の defaults をまとめて反映 (どれか変更したら最後に Finder を再起動)
+_finder_dirty=0
+
+# 隠しファイル表示
+_v=$(defaults read com.apple.finder AppleShowAllFiles 2>/dev/null || true)
+if [ "$_v" != "YES" ] && [ "$_v" != "1" ]; then
   defaults write com.apple.finder AppleShowAllFiles -bool true
-  killall Finder
+  _finder_dirty=1
 fi
-unset _finder_show
+
+# パスバー / ステータスバー
+if [ "$(defaults read com.apple.finder ShowPathbar 2>/dev/null || true)" != "1" ]; then
+  defaults write com.apple.finder ShowPathbar -bool true
+  _finder_dirty=1
+fi
+if [ "$(defaults read com.apple.finder ShowStatusBar 2>/dev/null || true)" != "1" ]; then
+  defaults write com.apple.finder ShowStatusBar -bool true
+  _finder_dirty=1
+fi
+
+# 拡張子を常に表示 (グローバルキーだが Finder が参照する)
+if [ "$(defaults read -g AppleShowAllExtensions 2>/dev/null || true)" != "1" ]; then
+  defaults write -g AppleShowAllExtensions -bool true
+  _finder_dirty=1
+fi
+
+if [ "$_finder_dirty" -eq 1 ]; then
+  killall Finder 2>/dev/null || true
+fi
+unset _finder_dirty _v
 
 # キーリピート速度Max ※ 反映には Mac の再起動が必要 (差分があるときだけ書く)
 if [ "$(defaults read -g InitialKeyRepeat 2>/dev/null || true)" != "15" ]; then
@@ -21,6 +44,20 @@ fi
 if [ "$(defaults read -g KeyRepeat 2>/dev/null || true)" != "2" ]; then
   defaults write -g KeyRepeat -int 2
   needs_restart=1
+fi
+
+# 長押しで accent menu ではなくキーリピートを発火 (Vim/IDE のキャレット移動に必須)
+if [ "$(defaults read -g ApplePressAndHoldEnabled 2>/dev/null || true)" != "0" ]; then
+  defaults write -g ApplePressAndHoldEnabled -bool false
+  needs_restart=1
+fi
+
+# テキスト入力の自動修正 / 先頭大文字化を停止 (コマンドやコード入力で誤書換を防止)
+if [ "$(defaults read -g NSAutomaticSpellingCorrectionEnabled 2>/dev/null || true)" != "0" ]; then
+  defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+fi
+if [ "$(defaults read -g NSAutomaticCapitalizationEnabled 2>/dev/null || true)" != "0" ]; then
+  defaults write -g NSAutomaticCapitalizationEnabled -bool false
 fi
 
 # gitconfig設定値のデフォルト取得
@@ -112,5 +149,5 @@ fi
 
 echo "-------Complete!-------"
 if [ "$needs_restart" -eq 1 ]; then
-  echo "Please restart your Mac to apply key repeat settings."
+  echo "Please restart your Mac to apply input settings."
 fi
