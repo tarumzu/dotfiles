@@ -67,7 +67,6 @@ gitemail=$(git config user.email || true)
 # dotfilesコピー
 mkdir -p "${HOME}/.config"
 readonly DOT_FILES=(
-                    .vimrc
                     .zshrc .zsh
                     .commit_template .gitconfig
                    )
