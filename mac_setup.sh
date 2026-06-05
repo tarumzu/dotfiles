@@ -102,12 +102,6 @@ export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 # Brewfile に定義したパッケージを一括インストール
 brew bundle --file="${PWD}/Brewfile"
 
-# Neovim の Python プロバイダ (macOS の Homebrew Python は PEP 668 で守られているため明示的に許可)
-# 既導入なら pip にも触らない (PyPI クエリと --break-system-packages 警告を毎回出さないため)
-if ! python3 -c "import pynvim" >/dev/null 2>&1; then
-  pip3 install --break-system-packages pynvim
-fi
-
 # /etc/shells と default shell を必要な時だけ更新
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then
   echo "$HOMEBREW_HOME/bin/zsh" | sudo tee -a /etc/shells
