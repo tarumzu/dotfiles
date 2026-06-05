@@ -24,6 +24,11 @@ export EDITOR=nvim
 # man を nvim の :Man! で開く (syntax highlight / 折返し / `/` 検索が効く)
 export MANPAGER='nvim +Man!'
 
+# bat の light テーマ (Ghostty の TokyoNight Day に合わせる)
+if command -v bat > /dev/null; then
+  export BAT_THEME=OneHalfLight
+fi
+
 # direnv
 if command -v direnv > /dev/null; then
   eval "$(direnv hook zsh)"
