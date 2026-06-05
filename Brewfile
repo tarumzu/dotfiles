@@ -17,7 +17,6 @@ brew "asdf"         # 言語バージョン管理 (.zshrc / tools.zsh の JAVA_H
 brew "bat"          # cat の代替 (syntax highlight, paging)
 brew "eza"          # ls の代替 (git-aware, icons)
 brew "git-delta"    # git diff の見た目改善 (.gitconfig で pager に紐付け)
-brew "lazygit"      # git の TUI
 brew "jq"           # JSON プロセッサ
 
 # ターミナル
