@@ -14,6 +14,11 @@ brew "ripgrep"      # grep の代替
 brew "direnv"       # ディレクトリ単位の環境変数
 brew "gh"           # GitHub CLI (PR / issue / workflow 操作)
 brew "asdf"         # 言語バージョン管理 (.zshrc / tools.zsh の JAVA_HOME helper が前提)
+brew "bat"          # cat の代替 (syntax highlight, paging)
+brew "eza"          # ls の代替 (git-aware, icons)
+brew "git-delta"    # git diff の見た目改善 (.gitconfig で pager に紐付け)
+brew "lazygit"      # git の TUI
+brew "jq"           # JSON プロセッサ
 
 # ターミナル
 tap "manaflow-ai/cmux"

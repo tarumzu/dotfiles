@@ -1,6 +1,11 @@
 [core]
-  pager = less
+  pager = delta
   autoCRLF = false
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true   # n / N で diff セクション間ジャンプ
+  light = true      # Ghostty の TokyoNight Day (light) に合わせる
 [include]
   path = ~/.gitconfig_user
 [alias]
