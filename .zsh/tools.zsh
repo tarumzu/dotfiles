@@ -21,6 +21,8 @@ unset _asdf_java_helper
 
 # エディタ
 export EDITOR=nvim
+# man を nvim の :Man! で開く (syntax highlight / 折返し / `/` 検索が効く)
+export MANPAGER='nvim +Man!'
 
 # direnv
 if command -v direnv > /dev/null; then
