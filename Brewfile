@@ -13,6 +13,7 @@ brew "fd"           # find の代替 (fzf 候補列挙)
 brew "ripgrep"      # grep の代替
 brew "direnv"       # ディレクトリ単位の環境変数
 brew "gh"           # GitHub CLI (PR / issue / workflow 操作)
+brew "asdf"         # 言語バージョン管理 (.zshrc / tools.zsh の JAVA_HOME helper が前提)
 
 # ターミナル
 tap "manaflow-ai/cmux"
