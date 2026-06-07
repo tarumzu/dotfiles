@@ -14,9 +14,6 @@ else
   alias l1="ls -1"
 fi
 
-# tree: -N 文字化け対策, -C 色付け
-alias tree="tree -NC"
-
 # nvim
 alias vim=nvim
 
