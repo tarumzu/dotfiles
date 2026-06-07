@@ -150,3 +150,8 @@ echo "-------Complete!-------"
 if [ "$needs_restart" -eq 1 ]; then
   echo "Please restart your Mac to apply input settings."
 fi
+
+# GitHub CLI が未認証なら警告 (PR / issue 操作で都度詰まらないように初回 setup 時に気づける)
+if command -v gh > /dev/null && ! gh auth status &>/dev/null; then
+  echo "gh: not authenticated — run \`gh auth login\` when ready."
+fi
