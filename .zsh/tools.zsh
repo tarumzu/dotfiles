@@ -34,12 +34,6 @@ if command -v direnv > /dev/null; then
   eval "$(direnv hook zsh)"
 fi
 
-# Go
-if command -v go > /dev/null; then
-  export GOPATH=$HOME/.go
-  export PATH=$PATH:$GOPATH/bin
-fi
-
 # fzf
 export FZF_COMPLETION_TRIGGER='~~'   # 既定の ** ではなく ~~ を使う
 export FZF_COMPLETION_OPTS='+c -x'
