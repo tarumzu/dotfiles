@@ -50,3 +50,11 @@ fi
 if command -v fzf > /dev/null; then
   eval "$(fzf --zsh)"
 fi
+
+# atuin: 暗号化シェル履歴 (Ctrl-R を置換)
+# 設定: ~/.config/atuin/config.toml (CONFIG_LINKS で symlink)
+# `↑` は zsh-history-substring-search に残すため --disable-up-arrow
+# fzf より後に init して Ctrl-R を atuin に上書きする
+if command -v atuin > /dev/null; then
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi

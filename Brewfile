@@ -18,6 +18,7 @@ brew "bat"          # cat の代替 (syntax highlight, paging)
 brew "eza"          # ls の代替 (git-aware, icons)
 brew "git-delta"    # git diff の見た目改善 (.gitconfig で pager に紐付け)
 brew "jq"           # JSON プロセッサ
+brew "atuin"        # 暗号化シェル履歴同期 (Ctrl-R を置換、.config/atuin/config.toml)
 
 # ターミナル
 tap "manaflow-ai/cmux"

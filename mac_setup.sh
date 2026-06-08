@@ -82,6 +82,7 @@ readonly CONFIG_LINKS=(
                        starship.toml # プロンプト設定
                        ghostty       # Ghostty 設定 (XDG_CONFIG_HOME 配下を参照)
                        git           # global gitignore (XDG: ~/.config/git/ignore)
+                       atuin         # atuin config.toml (encrypted history sync)
                       )
 for path in "${CONFIG_LINKS[@]}"; do
   if [ -e "${HOME}/.config/${path}" ] && [ ! -L "${HOME}/.config/${path}" ]; then

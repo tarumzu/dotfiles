@@ -1,0 +1,30 @@
+# atuin: encrypted shell history sync
+# https://docs.atuin.sh/configuration/config/
+
+# Sync target. デフォルトは公式ホスト (api.atuin.sh)。self-host する時は変更。
+# sync_address = "https://api.atuin.sh"
+
+# 各コマンド後に自動同期。`atuin sync` を手で叩く運用にしたければ false に。
+auto_sync = true
+
+# atuin 自体の更新チェックを無効化 (Homebrew で管理するため)
+update_check = false
+
+# 組み込み regex で API key / token / password 型のコマンドを自動的に記録対象外に
+secrets_filter = true
+
+# 追加で記録しないコマンドパターン
+history_filter = [
+  "^bw ",
+  "^bwu$",
+  "^bwl$",
+]
+
+# Ctrl-R を full-screen ではなく画面下から N 行のインラインで表示
+inline_height = 20
+
+# 検索モード (fuzzy / prefix / fulltext / skim)
+search_mode = "fuzzy"
+
+# Enter で即実行ではなく一旦プロンプトに置く (誤実行防止)
+enter_accept = false
