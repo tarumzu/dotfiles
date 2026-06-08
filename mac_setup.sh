@@ -138,6 +138,29 @@ export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 # Brewfile に定義したパッケージを一括インストール
 brew bundle --file="${PWD}/Brewfile"
 
+# Profile-specific overlay: 環境変数 DOTFILES_OVERLAY=<git URL> を指定する
+# と ~/.dotfiles-overlay/ に clone し、overlay 配下の Brewfile.local /
+# zsh/local.zsh を symlink で取り込む。overlay 不要なら何もしない
+# (Brewfile.local を手で置いた場合も同じく拾われる)。
+OVERLAY_DIR="${DOTFILES_OVERLAY_DIR:-${HOME}/.dotfiles-overlay}"
+if [ -n "${DOTFILES_OVERLAY:-}" ]; then
+  if [ ! -d "$OVERLAY_DIR/.git" ]; then
+    git clone "$DOTFILES_OVERLAY" "$OVERLAY_DIR"
+  else
+    git -C "$OVERLAY_DIR" pull --ff-only 2>/dev/null || true
+  fi
+fi
+if [ -d "$OVERLAY_DIR/.git" ]; then
+  [ -f "$OVERLAY_DIR/Brewfile.local" ] && \
+    ln -nfs "$OVERLAY_DIR/Brewfile.local" "${PWD}/Brewfile.local"
+  [ -f "$OVERLAY_DIR/zsh/local.zsh" ] && \
+    ln -nfs "$OVERLAY_DIR/zsh/local.zsh" "${HOME}/.zsh/local.zsh"
+fi
+# Brewfile.local (overlay 由来 or 手書き) があれば追加インストール
+if [ -f "${PWD}/Brewfile.local" ]; then
+  brew bundle --file="${PWD}/Brewfile.local"
+fi
+
 # /etc/shells と default shell を必要な時だけ更新
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then
   echo "$HOMEBREW_HOME/bin/zsh" | sudo tee -a /etc/shells

@@ -43,3 +43,8 @@ fi
 for conf in options aliases tools keybinds prompt; do
   source ~/.zsh/$conf.zsh
 done
+
+# -------------------------------------
+# Profile-local 設定 (host 固有 / overlay 由来、gitignored)
+# -------------------------------------
+[ -f ~/.zsh/local.zsh ] && source ~/.zsh/local.zsh
