@@ -30,7 +30,7 @@ use = ["init.sh"]
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
 # branch: master
-rev = "e52ee8ca55bcc56a17c828767a3f98f22a68d4eb" # v0.7.1 (2024-11-15)
+rev = "85919cd1ffa7d2d5412f6d3fe437ebdbeeec4fc5" # v0.7.1 (2024-11-15)
 
 # シンタックスハイライトは最後に読み込む必要がある
 [plugins.zsh-syntax-highlighting]
