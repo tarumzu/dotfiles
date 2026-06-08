@@ -4,3 +4,5 @@
 *~
 .idea/
 .gitconfig_user
+Brewfile.local
+.zsh/local.zsh
