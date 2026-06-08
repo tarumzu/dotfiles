@@ -22,7 +22,7 @@ jobs:
   validate:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
       - name: Verify every tap / formula / cask in Brewfile resolves
         env:
           HOMEBREW_NO_AUTO_UPDATE: "1"
