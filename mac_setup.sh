@@ -161,6 +161,11 @@ fi
 if [ -f "${PWD}/Brewfile.local" ]; then
   brew bundle --file="${PWD}/Brewfile.local"
 fi
+# overlay が独自の setup.sh を持っていれば実行 (idempotent 前提)。
+# Brewfile.local 以上のセットアップ (SSH/git 署名、~/.ssh/config 等) は overlay 側で扱う。
+if [ -x "$OVERLAY_DIR/setup.sh" ]; then
+  "$OVERLAY_DIR/setup.sh"
+fi
 
 # /etc/shells と default shell を必要な時だけ更新
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then

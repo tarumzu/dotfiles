@@ -8,6 +8,10 @@
   light = true      # Ghostty の TokyoNight Day (light) に合わせる
 [include]
   path = ~/.gitconfig_user
+[include]
+  # Optional: profile-local extras (e.g. SSH/GPG commit signing).
+  # Missing path is silently ignored by git, so this is no-op when not set up.
+  path = ~/.gitconfig_signing
 [alias]
   gl = log --pretty=format:\"%C(red)%h%Creset %C(cyan)<%an>%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset\" --abbrev-commit --date=relative --graph
 [filter "lfs"]
