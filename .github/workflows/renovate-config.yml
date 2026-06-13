@@ -2,7 +2,7 @@ name: renovate-config
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - "renovate.json"
       - ".github/workflows/renovate-config.yml"

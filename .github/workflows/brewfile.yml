@@ -2,7 +2,7 @@ name: brewfile
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths:
       - "Brewfile"
       - ".github/workflows/brewfile.yml"
