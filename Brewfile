@@ -5,6 +5,8 @@ brew "starship"     # クロスシェルプロンプト
 
 # エディタ
 brew "neovim"
+brew "stylua"       # Lua フォーマッタ (nvim conform.nvim が PATH 上を参照)
+brew "shfmt"        # シェルフォーマッタ (nvim conform.nvim が PATH 上を参照)
 
 # CLI ツール
 brew "ghq"          # リポジトリ管理 (g エイリアス)
@@ -23,6 +25,11 @@ brew "atuin"        # 暗号化シェル履歴同期 (Ctrl-R を置換、.config
 # ターミナル
 tap "manaflow-ai/cmux"
 cask "cmux"
+
+# フォント
+# Nerd Font: nvim の devicons (neo-tree / lualine / telescope) や
+# starship のアイコン表示に必要。ghostty の font-family と揃える。
+cask "font-jetbrains-mono-nerd-font"
 
 # Android 開発
 # 公式インストーラ等で既に Toolbox が入っている場合は brew install が
