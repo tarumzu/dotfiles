@@ -1,9 +1,7 @@
 shell = "zsh"
 
-# サプライチェーン対策: 各プラグインを特定コミットに固定 (rev)。
-# 更新時はリポジトリの差分をレビューした上で rev を手動で更新すること。
-# 末尾コメントは固定コミット時点のバージョン (タグ/日付)。
-# `# branch:` 行は sheldon は無視するが Renovate の customManager が currentValue として読み取る。
+# 各プラグインを rev 固定 (サプライチェーン対策)。更新は差分レビュー後に手動 bump。
+# `# branch:` 行は sheldon は無視、Renovate customManager が currentValue として読む。
 
 [plugins]
 
