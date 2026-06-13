@@ -13,12 +13,11 @@ update_check = false
 # 組み込み regex で API key / token / password 型のコマンドを自動的に記録対象外に
 secrets_filter = true
 
-# 追加で記録しないコマンドパターン
-history_filter = [
-  "^bw ",
-  "^bwu$",
-  "^bwl$",
-]
+# 追加で記録しないコマンドパターン。
+# secrets_filter (上) が API key / token / password 型を既に除外するため、
+# host 固有・個人固有のパターンは public repo のここには置かない。
+# 必要なら overlay の setup.sh でこの値を上書きする運用にする。
+history_filter = []
 
 # Ctrl-R を full-screen ではなく画面下から N 行のインラインで表示
 inline_height = 20

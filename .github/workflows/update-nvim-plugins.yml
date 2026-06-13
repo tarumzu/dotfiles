@@ -33,7 +33,7 @@ jobs:
           commit-message: "chore(nvim): update lazy-lock.json"
           title: "chore(nvim): update Neovim plugins"
           body: |
-            自動実行された `:Lazy! sync` による lazy-lock.json の更新です。
-            マージ前に lazy-lock.json の差分をレビューしてください。
+            Automated `:Lazy! sync` update of lazy-lock.json.
+            Please review the lazy-lock.json diff before merging.
           branch: chore/nvim-plugin-updates
           add-paths: .config/nvim/lazy-lock.json
