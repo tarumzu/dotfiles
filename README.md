@@ -8,10 +8,18 @@ cd dotfiles
 ./mac_setup.sh
 ```
 
-On a fresh Mac the first `git` invocation triggers an Xcode Command
-Line Tools install dialog — accept it. `mac_setup.sh` waits for the
-install to finish, then prompts for `user.name` / `user.email` and
-writes them to `~/.gitconfig_user` (kept out of this repo).
+On a fresh Mac, Xcode Command Line Tools are installed first: a system
+dialog appears — accept it, and the script waits for the install to
+finish before continuing. It then prompts for `user.name` / `user.email`
+and writes them to `~/.gitconfig_user` (kept out of this repo).
+
+Re-runs are idempotent and show your current identity as the defaults.
+Pass `-y` (or `--yes`) to skip the identity prompts and reuse the existing
+values — handy for unattended re-runs:
+
+```sh
+./mac_setup.sh -y
+```
 
 ## Per-machine extensions
 

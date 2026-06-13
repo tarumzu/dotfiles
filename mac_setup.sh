@@ -7,6 +7,17 @@ echo "-------Start!-------"
 # 壊れないように、以降のパス参照は ${PWD} ではなく ${SCRIPT_DIR} を使う。
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# 非対話モード: -y / --yes で git identity の対話入力をスキップする
+# (再実行や overlay からの無人実行向け)。sudo / chsh など OS の認証
+# プロンプトは対象外で、必要時には別途出ることがある。
+assume_yes=0
+for arg in "$@"; do
+  case "$arg" in
+    -y|--yes) assume_yes=1 ;;
+    *) echo "unknown option: $arg (usage: $0 [-y|--yes])" >&2; exit 2 ;;
+  esac
+done
+
 # Mac の再起動が必要な変更があったかを追跡する
 needs_restart=0
 
@@ -77,10 +88,6 @@ if [ "$(defaults read -g NSAutomaticCapitalizationEnabled 2>/dev/null || true)" 
   defaults write -g NSAutomaticCapitalizationEnabled -bool false
 fi
 
-# gitconfig設定値のデフォルト取得
-gitname=$(git config user.name || true)
-gitemail=$(git config user.email || true)
-
 # dotfilesコピー
 mkdir -p "${HOME}/.config"
 readonly DOT_FILES=(
@@ -108,17 +115,27 @@ for path in "${CONFIG_LINKS[@]}"; do
   ln -nfs "${SCRIPT_DIR}/.config/${path}" "${HOME}/.config/${path}"
 done
 
-# gitconfig設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)
-read -r -p "gitconfig user.name (${gitname}):" name
-if [ -n "$name" ]; then
-  gitname=$name
+# gitconfig 設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)。
+# 既存値は ~/.gitconfig_user を最優先で読む (再実行時に現在値を引き継ぐ)。
+gitname=$(git config -f "${HOME}/.gitconfig_user" user.name 2>/dev/null || true)
+gitemail=$(git config -f "${HOME}/.gitconfig_user" user.email 2>/dev/null || true)
+[ -z "$gitname" ]  && gitname=$(git config user.name 2>/dev/null || true)
+[ -z "$gitemail" ] && gitemail=$(git config user.email 2>/dev/null || true)
+
+if [ "$assume_yes" -eq 1 ]; then
+  # -y: prompt せず現在値を使う。未設定なら警告のみ出して続行する。
+  [ -z "$gitname" ]  && echo "warn: git user.name is unset; set it in ~/.gitconfig_user later." >&2
+  [ -z "$gitemail" ] && echo "warn: git user.email is unset; set it in ~/.gitconfig_user later." >&2
+else
+  read -r -p "gitconfig user.name (${gitname}):" name
+  [ -n "$name" ] && gitname=$name
+  read -r -p "gitconfig user.email (${gitemail}):" email
+  [ -n "$email" ] && gitemail=$email
 fi
-git config -f "${HOME}/.gitconfig_user" user.name "$gitname"
-read -r -p "gitconfig user.email (${gitemail}):" email
-if [ -n "$email" ]; then
-  gitemail=$email
-fi
-git config -f "${HOME}/.gitconfig_user" user.email "$gitemail"
+
+# 空値で user.name / user.email を上書きしない (-y かつ未設定の時に "" を書かない)
+[ -n "$gitname" ]  && git config -f "${HOME}/.gitconfig_user" user.name "$gitname"
+[ -n "$gitemail" ] && git config -f "${HOME}/.gitconfig_user" user.email "$gitemail"
 
 # brew install
 if ! command -v brew &>/dev/null; then
