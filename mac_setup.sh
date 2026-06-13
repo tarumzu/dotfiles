@@ -2,8 +2,25 @@
 set -euo pipefail
 echo "-------Start!-------"
 
+# このスクリプトの位置から repo root を決定する。
+# 任意の CWD (フルパス実行など) から起動しても symlink / brew bundle が
+# 壊れないように、以降のパス参照は ${PWD} ではなく ${SCRIPT_DIR} を使う。
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 # Mac の再起動が必要な変更があったかを追跡する
 needs_restart=0
+
+# Xcode Command Line Tools を最初に導入する。
+# git / brew より前に置くことで、最初の git 呼び出しで暗黙にインストール
+# ダイアログが出る (=明示ハンドラより前にダイアログが出る) ねじれを避ける。
+# 未導入なら GUI ダイアログを起動し、完了するまで後続を待たせる。
+if ! xcode-select -p &>/dev/null; then
+  xcode-select --install
+  echo "Waiting for Xcode Command Line Tools to finish installing..."
+  until xcode-select -p &>/dev/null; do
+    sleep 10
+  done
+fi
 
 # Finder 関連の defaults をまとめて反映 (どれか変更したら最後に Finder を再起動)
 _finder_dirty=0
@@ -73,7 +90,7 @@ readonly DOT_FILES=(
 # -n が無いと、対象 (~/.zsh など) が既に symlink で directory を指している場合に
 # その配下へリンクを作ってしまい再帰 symlink が発生する。
 for file in "${DOT_FILES[@]}"; do
-  ln -nfs "${PWD}/${file}" "${HOME}/${file}"
+  ln -nfs "${SCRIPT_DIR}/${file}" "${HOME}/${file}"
 done
 # ~/.config 配下の symlink (実体ディレクトリなら退避してから張り替え)
 readonly CONFIG_LINKS=(
@@ -88,7 +105,7 @@ for path in "${CONFIG_LINKS[@]}"; do
   if [ -e "${HOME}/.config/${path}" ] && [ ! -L "${HOME}/.config/${path}" ]; then
     mv "${HOME}/.config/${path}" "${HOME}/.config/${path}_$(date "+%Y%m%d_%H%M%S")"
   fi
-  ln -nfs "${PWD}/.config/${path}" "${HOME}/.config/${path}"
+  ln -nfs "${SCRIPT_DIR}/.config/${path}" "${HOME}/.config/${path}"
 done
 
 # gitconfig設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)
@@ -102,15 +119,6 @@ if [ -n "$email" ]; then
   gitemail=$email
 fi
 git config -f "${HOME}/.gitconfig_user" user.email "$gitemail"
-
-# Xcode Command Line Tools (未導入なら GUI ダイアログを起動し、完了するまで後続を待たせる)
-if ! xcode-select -p &>/dev/null; then
-  xcode-select --install
-  echo "Waiting for Xcode Command Line Tools to finish installing..."
-  until xcode-select -p &>/dev/null; do
-    sleep 10
-  done
-fi
 
 # brew install
 if ! command -v brew &>/dev/null; then
@@ -137,7 +145,7 @@ fi
 export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 
 # Brewfile に定義したパッケージを一括インストール
-brew bundle --file="${PWD}/Brewfile"
+brew bundle --file="${SCRIPT_DIR}/Brewfile"
 
 # Profile-specific overlay: 環境変数 DOTFILES_OVERLAY=<git URL> を指定する
 # と ~/.dotfiles-overlay/ に clone し、overlay 配下の Brewfile.local /
@@ -153,13 +161,13 @@ if [ -n "${DOTFILES_OVERLAY:-}" ]; then
 fi
 if [ -d "$OVERLAY_DIR/.git" ]; then
   [ -f "$OVERLAY_DIR/Brewfile.local" ] && \
-    ln -nfs "$OVERLAY_DIR/Brewfile.local" "${PWD}/Brewfile.local"
+    ln -nfs "$OVERLAY_DIR/Brewfile.local" "${SCRIPT_DIR}/Brewfile.local"
   [ -f "$OVERLAY_DIR/zsh/local.zsh" ] && \
     ln -nfs "$OVERLAY_DIR/zsh/local.zsh" "${HOME}/.zsh/local.zsh"
 fi
 # Brewfile.local (overlay 由来 or 手書き) があれば追加インストール
-if [ -f "${PWD}/Brewfile.local" ]; then
-  brew bundle --file="${PWD}/Brewfile.local"
+if [ -f "${SCRIPT_DIR}/Brewfile.local" ]; then
+  brew bundle --file="${SCRIPT_DIR}/Brewfile.local"
 fi
 # overlay が独自の setup.sh を持っていれば実行 (idempotent 前提)。
 # Brewfile.local 以上のセットアップ (SSH/git 署名、~/.ssh/config 等) は overlay 側で扱う。
@@ -171,9 +179,14 @@ fi
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then
   echo "$HOMEBREW_HOME/bin/zsh" | sudo tee -a /etc/shells
 fi
-if [ "${SHELL:-}" != "$HOMEBREW_HOME/bin/zsh" ]; then
+# $SHELL は再ログインまで更新されないため、実際のログインシェルを dscl で
+# 参照して判定する (同一セッションでの再実行で chsh を空打ち=パスワード再要求
+# しないように)。
+_current_shell="$(dscl . -read "$HOME" UserShell 2>/dev/null | awk '{print $2}')"
+if [ "$_current_shell" != "$HOMEBREW_HOME/bin/zsh" ]; then
   chsh -s "$HOMEBREW_HOME/bin/zsh"
 fi
+unset _current_shell
 
 echo "-------Complete!-------"
 if [ "$needs_restart" -eq 1 ]; then

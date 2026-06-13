@@ -27,7 +27,20 @@ export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 # -------------------------------------
 # 補完初期化 (zplug が担っていた compinit を明示実行)
 # -------------------------------------
-autoload -Uz compinit && compinit
+# .zcompdump が 24h より古い (= 要再生成) の時だけフルの compinit
+# (セキュリティチェック込み) を走らせ、それ以外は -C でチェックを省いて
+# 起動を高速化する。glob 修飾子 (N.mh+24) で「24h 超前に変更された
+# 通常ファイル」を配列に集め、空かどうかで分岐する。
+# ※ [[ -n ...(#q...) ]] 形式は [[ ]] 内で filename generation が起きず
+#   常に真になるため使わない。
+autoload -Uz compinit
+_zcompdump_stale=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh+24))
+if (( ${#_zcompdump_stale} )); then
+  compinit
+else
+  compinit -C
+fi
+unset _zcompdump_stale
 
 # -------------------------------------
 # sheldon (プラグインマネージャ)
