@@ -2,14 +2,10 @@
 set -euo pipefail
 echo "-------Start!-------"
 
-# このスクリプトの位置から repo root を決定する。
-# 任意の CWD (フルパス実行など) から起動しても symlink / brew bundle が
-# 壊れないように、以降のパス参照は ${PWD} ではなく ${SCRIPT_DIR} を使う。
+# repo root を解決 (${PWD} 依存だと任意 CWD 実行で symlink が壊れるため)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# 非対話モード: -y / --yes で git identity の対話入力をスキップする
-# (再実行や overlay からの無人実行向け)。sudo / chsh など OS の認証
-# プロンプトは対象外で、必要時には別途出ることがある。
+# -y / --yes: git identity の対話入力をスキップ (再実行・無人実行向け)
 assume_yes=0
 for arg in "$@"; do
   case "$arg" in
@@ -21,10 +17,7 @@ done
 # Mac の再起動が必要な変更があったかを追跡する
 needs_restart=0
 
-# Xcode Command Line Tools を最初に導入する。
-# git / brew より前に置くことで、最初の git 呼び出しで暗黙にインストール
-# ダイアログが出る (=明示ハンドラより前にダイアログが出る) ねじれを避ける。
-# 未導入なら GUI ダイアログを起動し、完了するまで後続を待たせる。
+# Xcode CLT を git/brew より先に導入 (未導入なら GUI を出して完了まで待つ)
 if ! xcode-select -p &>/dev/null; then
   xcode-select --install
   echo "Waiting for Xcode Command Line Tools to finish installing..."
@@ -94,8 +87,7 @@ readonly DOT_FILES=(
                     .zshrc .zsh
                     .commit_template .gitconfig
                    )
-# -n が無いと、対象 (~/.zsh など) が既に symlink で directory を指している場合に
-# その配下へリンクを作ってしまい再帰 symlink が発生する。
+# -n: ~/.zsh 等が既に symlink dir の時、配下への再帰 symlink を防ぐ
 for file in "${DOT_FILES[@]}"; do
   ln -nfs "${SCRIPT_DIR}/${file}" "${HOME}/${file}"
 done
@@ -115,15 +107,14 @@ for path in "${CONFIG_LINKS[@]}"; do
   ln -nfs "${SCRIPT_DIR}/.config/${path}" "${HOME}/.config/${path}"
 done
 
-# gitconfig 設定 (リポジトリ管理外の ~/.gitconfig_user に書き込む)。
-# 既存値は ~/.gitconfig_user を最優先で読む (再実行時に現在値を引き継ぐ)。
+# git identity を ~/.gitconfig_user に書く (既存値を default に引き継ぐ)
 gitname=$(git config -f "${HOME}/.gitconfig_user" user.name 2>/dev/null || true)
 gitemail=$(git config -f "${HOME}/.gitconfig_user" user.email 2>/dev/null || true)
 [ -z "$gitname" ]  && gitname=$(git config user.name 2>/dev/null || true)
 [ -z "$gitemail" ] && gitemail=$(git config user.email 2>/dev/null || true)
 
 if [ "$assume_yes" -eq 1 ]; then
-  # -y: prompt せず現在値を使う。未設定なら警告のみ出して続行する。
+  # -y: prompt せず現在値を使う (未設定なら警告のみ)
   [ -z "$gitname" ]  && echo "warn: git user.name is unset; set it in ~/.gitconfig_user later." >&2
   [ -z "$gitemail" ] && echo "warn: git user.email is unset; set it in ~/.gitconfig_user later." >&2
 else
@@ -133,14 +124,14 @@ else
   [ -n "$email" ] && gitemail=$email
 fi
 
-# 空値で user.name / user.email を上書きしない (-y かつ未設定の時に "" を書かない)
+# 空値で上書きしない (-y かつ未設定時に "" を書かないため)
 [ -n "$gitname" ]  && git config -f "${HOME}/.gitconfig_user" user.name "$gitname"
 [ -n "$gitemail" ] && git config -f "${HOME}/.gitconfig_user" user.email "$gitemail"
 
 # brew install
 if ! command -v brew &>/dev/null; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  # インストール直後のセッションには PATH が通っていないので明示的にロード
+  # インストール直後は PATH 未通なので明示ロード
   if [[ -d '/opt/homebrew' ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
   else
@@ -164,10 +155,8 @@ export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 # Brewfile に定義したパッケージを一括インストール
 brew bundle --file="${SCRIPT_DIR}/Brewfile"
 
-# Profile-specific overlay: 環境変数 DOTFILES_OVERLAY=<git URL> を指定する
-# と ~/.dotfiles-overlay/ に clone し、overlay 配下の Brewfile.local /
-# zsh/local.zsh を symlink で取り込む。overlay 不要なら何もしない
-# (Brewfile.local を手で置いた場合も同じく拾われる)。
+# overlay: DOTFILES_OVERLAY=<git URL> を ~/.dotfiles-overlay に clone し
+# Brewfile.local / zsh/local.zsh を取り込む (未指定なら no-op)
 OVERLAY_DIR="${DOTFILES_OVERLAY_DIR:-${HOME}/.dotfiles-overlay}"
 if [ -n "${DOTFILES_OVERLAY:-}" ]; then
   if [ ! -d "$OVERLAY_DIR/.git" ]; then
@@ -186,8 +175,7 @@ fi
 if [ -f "${SCRIPT_DIR}/Brewfile.local" ]; then
   brew bundle --file="${SCRIPT_DIR}/Brewfile.local"
 fi
-# overlay が独自の setup.sh を持っていれば実行 (idempotent 前提)。
-# Brewfile.local 以上のセットアップ (SSH/git 署名、~/.ssh/config 等) は overlay 側で扱う。
+# overlay 独自の setup.sh があれば実行 (SSH/git 署名等は overlay 側、idempotent 前提)
 if [ -x "$OVERLAY_DIR/setup.sh" ]; then
   "$OVERLAY_DIR/setup.sh"
 fi
@@ -196,9 +184,7 @@ fi
 if ! grep -qxF "$HOMEBREW_HOME/bin/zsh" /etc/shells; then
   echo "$HOMEBREW_HOME/bin/zsh" | sudo tee -a /etc/shells
 fi
-# $SHELL は再ログインまで更新されないため、実際のログインシェルを dscl で
-# 参照して判定する (同一セッションでの再実行で chsh を空打ち=パスワード再要求
-# しないように)。
+# ログインシェルは dscl で判定 ($SHELL は再ログインまで古く、再実行で chsh 空打ちを招く)
 _current_shell="$(dscl . -read "$HOME" UserShell 2>/dev/null | awk '{print $2}')"
 if [ "$_current_shell" != "$HOMEBREW_HOME/bin/zsh" ]; then
   chsh -s "$HOMEBREW_HOME/bin/zsh"

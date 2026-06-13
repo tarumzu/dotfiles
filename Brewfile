@@ -5,8 +5,8 @@ brew "starship"     # クロスシェルプロンプト
 
 # エディタ
 brew "neovim"
-brew "stylua"       # Lua フォーマッタ (nvim conform.nvim が PATH 上を参照)
-brew "shfmt"        # シェルフォーマッタ (nvim conform.nvim が PATH 上を参照)
+brew "stylua"       # Lua フォーマッタ (nvim conform)
+brew "shfmt"        # シェルフォーマッタ (nvim conform)
 
 # CLI ツール
 brew "ghq"          # リポジトリ管理 (g エイリアス)
@@ -26,18 +26,14 @@ brew "atuin"        # 暗号化シェル履歴同期 (Ctrl-R を置換、.config
 tap "manaflow-ai/cmux"
 cask "cmux"
 
-# フォント
-# Nerd Font: nvim の devicons (neo-tree / lualine / telescope) や
-# starship のアイコン表示に必要。ghostty の font-family と揃える。
+# フォント (Nerd Font: nvim devicons / starship アイコン用。ghostty と揃える)
 cask "font-jetbrains-mono-nerd-font"
 
 # Android 開発
-# 公式インストーラ等で既に Toolbox が入っている場合は brew install が
-# "App already exists" で失敗するため、未インストール時のみ brew に任せる。
+# Toolbox 導入済みだと brew が "App already exists" で失敗するため未導入時のみ
 cask "jetbrains-toolbox" unless File.exist?("/Applications/JetBrains Toolbox.app")
 
-# Android CLI (https://developer.android.com/tools/agents/android-cli)
-# Android Studio / SDK / Journeys 等を操作するエージェント向け CLI。
-# android/homebrew-tap は formula ではなく cask として配布している点に注意。
+# Android CLI (エージェント向け。https://developer.android.com/tools/agents/android-cli)
+# formula ではなく cask 配布な点に注意
 tap "android/tap"
 cask "android-cli"

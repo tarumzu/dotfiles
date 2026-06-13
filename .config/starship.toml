@@ -12,9 +12,7 @@ format = "[\\[$time\\]]($style) "
 time_format = "%H:%M:%S"
 style = "white"
 
-# Java / Kotlin のバージョン (Android プロジェクトを跨いだ時の取り違え防止)
-# 検出元: pom.xml / build.gradle(.kts) / .java-version / .kt(.kts) ファイル等
-# JDK / kotlinc が PATH に無い時はモジュール自体が非表示になるので無害
+# Java/Kotlin バージョン表示 (プロジェクト取り違え防止。PATH に無ければ非表示)
 [java]
 style = "bold red"   # default "red dimmed" は light テーマで読みにくい
 

@@ -13,10 +13,7 @@ update_check = false
 # 組み込み regex で API key / token / password 型のコマンドを自動的に記録対象外に
 secrets_filter = true
 
-# 追加で記録しないコマンドパターン。
-# secrets_filter (上) が API key / token / password 型を既に除外するため、
-# host 固有・個人固有のパターンは public repo のここには置かない。
-# 必要なら overlay の setup.sh でこの値を上書きする運用にする。
+# 追加の記録除外パターン。個人固有のものは public repo に置かない (overlay 側で上書き)
 history_filter = []
 
 # Ctrl-R を full-screen ではなく画面下から N 行のインラインで表示
