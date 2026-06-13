@@ -7,9 +7,9 @@
 theme = TokyoNight Day
 
 # === Font ===
-# Nerd Font (Powerline glyphs / starship のアイコン用) が必要なら以下を有効化:
-#   brew install --cask font-jetbrains-mono-nerd-font
-# font-family = "JetBrainsMono Nerd Font"
+# Nerd Font: nvim の devicons (neo-tree / lualine / telescope) や starship の
+# アイコン表示に必要。Brewfile の cask "font-jetbrains-mono-nerd-font" で導入。
+font-family = "JetBrainsMono Nerd Font"
 font-size = 14
 
 # === Cursor ===
