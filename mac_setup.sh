@@ -152,6 +152,13 @@ fi
 
 export PATH="$HOMEBREW_HOME/bin:$HOMEBREW_HOME/sbin:$PATH"
 
+# 非公式 tap の cask は新しい Homebrew が untrusted として読込拒否するため、
+# bundle 前に対象 cask だけ信頼する (brew trust 非対応の旧 brew は skip)。
+if brew trust --help &>/dev/null; then
+  brew trust --cask android/tap/android-cli || true
+  brew trust --cask manaflow-ai/cmux/cmux || true
+fi
+
 # Brewfile に定義したパッケージを一括インストール
 brew bundle --file="${SCRIPT_DIR}/Brewfile"
 
