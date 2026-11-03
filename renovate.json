@@ -9,7 +9,23 @@
     "labels": ["security"]
   },
   "osvVulnerabilityAlerts": true,
+  "packageRules": [
+    {
+      "description": "GitHub Actions のコミット固定は .github/workflows/actions.lock が担う (Renovate が更新時に再生成する)。uses: への digest 固定と二重管理にしない",
+      "matchManagers": ["github-actions"],
+      "pinDigests": false
+    }
+  ],
   "customManagers": [
+    {
+      "customType": "regex",
+      "description": "actions-lock.yml: gh-actions-lock 拡張の --pin バージョンを更新",
+      "managerFilePatterns": ["/^\\.github/workflows/actions-lock\\.yml$/"],
+      "matchStrings": [
+        "gh extension install (?<depName>github/gh-actions-lock) --pin (?<currentValue>v\\S+)"
+      ],
+      "datasourceTemplate": "github-releases"
+    },
     {
       "customType": "regex",
       "description": "sheldon plugins.toml: github + rev で固定したコミットを更新",
