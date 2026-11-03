@@ -24,7 +24,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v6.0.3
+      - uses: actions/checkout@v6.1.0
         with:
           persist-credentials: false
       # 拡張のバージョンは renovate.json の customManager で更新する
