@@ -28,7 +28,7 @@ jobs:
           # sync = 不足プラグインの install + 既存の update + lazy-lock.json への書き戻し
           nvim --headless "+Lazy! sync" +qa
 
-      - uses: peter-evans/create-pull-request@v8.1.1
+      - uses: peter-evans/create-pull-request@v8.1.3
         with:
           commit-message: "chore(nvim): update lazy-lock.json"
           title: "chore(nvim): update Neovim plugins"
